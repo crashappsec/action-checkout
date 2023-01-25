@@ -74,7 +74,7 @@ inputs:
     default: 1
   lfs:
     description: "Whether to download Git-LFS files"
-    default: false
+    default: true
   submodules:
     description: >
       Whether to checkout submodules: `true` to checkout submodules or `recursive` to
@@ -136,6 +136,7 @@ runs:
         echo "CACHE_PATHS=$CACHE_PATHS" >> $GITHUB_OUTPUT
 
     - name: Restore LFS cache
+      if: inputs.lfs
       uses: actions/cache@v3
       id: lfs-cache
       with:
@@ -145,6 +146,7 @@ runs:
         key: lfs-${{ hashFiles('.lfs-assets-id') }}-v2
 
     - name: Git LFS Pull
+      if: inputs.lfs
       shell: bash
       run: |
         git lfs pull --include  "${{ inputs.include }}" --exclude  "${{ inputs.exclude }}"
@@ -152,6 +154,7 @@ runs:
 
     # Don't leave behind temp files in case build system checks for dirty workspace
     - name: Cleanup Temp Files
+      if: inputs.lfs
       shell: bash
       run: |
         rm .lfs-assets-id-unsorted

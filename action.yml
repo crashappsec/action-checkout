@@ -115,6 +115,7 @@ runs:
       if: inputs.lfs
       id: lfs
       shell: bash
+      working-directory: ${{ inputs.path }}
       run: |
         if grep lfs .gitattributes &> /dev/null; then
           echo "is_preset=true" >> $GITHUB_OUTPUT
@@ -125,6 +126,7 @@ runs:
     - name: Create LFS file list
       if: steps.lfs.outputs.is_present
       shell: bash
+      working-directory: ${{ inputs.path }}
       run: |
         git lfs ls-files --long --include  "${{ inputs.include }}" --exclude  "${{ inputs.exclude }}" | cut -d ' ' -f1 > .lfs-assets-id-unsorted
         git submodule foreach git lfs ls-files --long --include  "${{ inputs.include }}" --exclude  "${{ inputs.exclude }}" | cut -d ' ' -f1 >> .lfs-assets-id-unsorted
@@ -134,6 +136,7 @@ runs:
       if: steps.lfs.outputs.is_present
       id: cache-paths
       shell: bash
+      working-directory: ${{ inputs.path }}
       run: |
         CACHE_PATHS=""
 
@@ -150,6 +153,7 @@ runs:
       if: steps.lfs.outputs.is_present
       uses: actions/cache@v3
       id: lfs-cache
+      working-directory: ${{ inputs.path }}
       with:
         path: |
           .git/lfs
@@ -159,6 +163,7 @@ runs:
     - name: Git LFS Pull
       if: steps.lfs.outputs.is_present
       shell: bash
+      working-directory: ${{ inputs.path }}
       run: |
         git lfs pull --include  "${{ inputs.include }}" --exclude  "${{ inputs.exclude }}"
         git submodule foreach git lfs pull --include  "${{ inputs.include }}" --exclude  "${{ inputs.exclude }}"
@@ -167,6 +172,7 @@ runs:
     - name: Cleanup Temp Files
       if: steps.lfs.outputs.is_present
       shell: bash
+      working-directory: ${{ inputs.path }}
       run: |
         rm .lfs-assets-id-unsorted
         rm .lfs-assets-id

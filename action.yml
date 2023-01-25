@@ -111,8 +111,19 @@ runs:
         set-safe-directory: ${{ inputs.set-safe-directory }}
         github-server-url: ${{ inputs.github-server-url }}
 
-    - name: Create LFS file list
+    - name: Detect LFS
       if: inputs.lfs
+      id: lfs
+      shell: bash
+      run: |
+        if grep lfs .gitattributes &> /dev/null; then
+          echo "is_preset=true" >> $GITHUB_OUTPUT
+        else
+          echo "is_preset=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Create LFS file list
+      if: steps.lfs.outputs.is_present
       shell: bash
       run: |
         git lfs ls-files --long --include  "${{ inputs.include }}" --exclude  "${{ inputs.exclude }}" | cut -d ' ' -f1 > .lfs-assets-id-unsorted
@@ -120,7 +131,7 @@ runs:
         cat .lfs-assets-id-unsorted | sort > .lfs-assets-id
 
     - name: Create Submodule LFS Cache Paths
-      if: inputs.lfs
+      if: steps.lfs.outputs.is_present
       id: cache-paths
       shell: bash
       run: |
@@ -136,7 +147,7 @@ runs:
         echo "CACHE_PATHS=$CACHE_PATHS" >> $GITHUB_OUTPUT
 
     - name: Restore LFS cache
-      if: inputs.lfs
+      if: steps.lfs.outputs.is_present
       uses: actions/cache@v3
       id: lfs-cache
       with:
@@ -146,7 +157,7 @@ runs:
         key: lfs-${{ hashFiles('.lfs-assets-id') }}-v2
 
     - name: Git LFS Pull
-      if: inputs.lfs
+      if: steps.lfs.outputs.is_present
       shell: bash
       run: |
         git lfs pull --include  "${{ inputs.include }}" --exclude  "${{ inputs.exclude }}"
@@ -154,7 +165,7 @@ runs:
 
     # Don't leave behind temp files in case build system checks for dirty workspace
     - name: Cleanup Temp Files
-      if: inputs.lfs
+      if: steps.lfs.outputs.is_present
       shell: bash
       run: |
         rm .lfs-assets-id-unsorted

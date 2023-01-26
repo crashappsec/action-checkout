@@ -16,6 +16,13 @@ inputs:
     required: false
     default: ""
 
+  app-id:
+    description: "GitHub App ID to generate token"
+    required: false
+  private-key:
+    description: "GitHub App private key to generate token"
+    required: false
+
   # rest of inputs are direct copy from checkout@v3
   repository:
     description: "Repository name with owner. For example, actions/checkout"
@@ -95,12 +102,20 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Generate org-level access token
+      if: inputs.app_id && inputs.private_key
+      id: org-token
+      uses: getsentry/action-github-app-token@v1
+      with:
+        app_id: ${{ inputs.app-id }}
+        private_key: ${{ inputs.private-key }}
+
     - name: Checkout code
       uses: actions/checkout@v3
       with:
         repository: ${{ inputs.repository }}
         ref: ${{ inputs.ref }}
-        token: ${{ inputs.token }}
+        token: ${{ steps.org-token.ouputs.token || inputs.token }}
         ssh-key: ${{ inputs.ssh-key }}
         ssh-known-hosts: ${{ inputs.ssh-known-hosts }}
         ssh-strict: ${{ inputs.ssh-strict }}

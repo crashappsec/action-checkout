@@ -105,7 +105,7 @@ runs:
     - name: Generate org-level access token
       if: inputs.app-id && inputs.private-key
       id: org-token
-      uses: getsentry/action-github-app-token@v1
+      uses: crashappsec/action-github-app-token@main
       with:
         app_id: ${{ inputs.app-id }}
         private_key: ${{ inputs.private-key }}

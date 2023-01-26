@@ -160,7 +160,7 @@ runs:
         # `git config` is used to extract the `path` value for each git submodule
         # for more information about the .gitmodules file, see: https://git-scm.com/docs/gitmodules
         while read line; do
-          CACHE_PATHS+=".git/modules/$line/lfs "
+          CACHE_PATHS+="${{ inputs.path }}/.git/modules/$line/lfs "
         done < <(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
 
         echo "CACHE_PATHS=$CACHE_PATHS" >> $GITHUB_OUTPUT
@@ -172,8 +172,8 @@ runs:
       with:
         path: |
           ${{ inputs.path }}/.git/lfs
-          ${{ inputs.path }}/${{ steps.cache-paths.outputs.CACHE_PATHS }}
-        key: lfs-${{ hashFiles('.lfs-assets-id') }}-v2
+          ${{ steps.cache-paths.outputs.CACHE_PATHS }}
+        key: lfs-${{ hashFiles(format('{{0}}/{{1}}', inputs.path, '.lfs-assets-id')) }}-v2
 
     - name: Git LFS Pull
       if: steps.lfs.outputs.is_present

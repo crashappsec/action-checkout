@@ -66,6 +66,7 @@ inputs:
     default: true
   path:
     description: "Relative path under $GITHUB_WORKSPACE to place the repository"
+    default: .
   clean:
     description: "Whether to execute `git clean -ffdx && git reset --hard HEAD` before fetching"
     default: true
@@ -153,11 +154,10 @@ runs:
       if: steps.lfs.outputs.is_present
       uses: actions/cache@v3
       id: lfs-cache
-      working-directory: ${{ inputs.path }}
       with:
         path: |
-          .git/lfs
-          ${{ steps.cache-paths.outputs.CACHE_PATHS }}
+          ${{ inputs.path }}/.git/lfs
+          ${{ inputs.path }}/${{ steps.cache-paths.outputs.CACHE_PATHS }}
         key: lfs-${{ hashFiles('.lfs-assets-id') }}-v2
 
     - name: Git LFS Pull

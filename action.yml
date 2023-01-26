@@ -118,9 +118,9 @@ runs:
       working-directory: ${{ inputs.path }}
       run: |
         if grep lfs .gitattributes &> /dev/null; then
-          echo "is_preset=true" >> $GITHUB_OUTPUT
+          echo "is_present=true" >> $GITHUB_OUTPUT
         else
-          echo "is_preset=false" >> $GITHUB_OUTPUT
+          echo "is_present=false" >> $GITHUB_OUTPUT
         fi
 
     - name: Create LFS file list

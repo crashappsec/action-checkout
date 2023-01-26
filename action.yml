@@ -103,7 +103,7 @@ runs:
   using: "composite"
   steps:
     - name: Generate org-level access token
-      if: inputs.app_id && inputs.private_key
+      if: inputs.app-id && inputs.private-key
       id: org-token
       uses: getsentry/action-github-app-token@v1
       with:
@@ -115,7 +115,7 @@ runs:
       with:
         repository: ${{ inputs.repository }}
         ref: ${{ inputs.ref }}
-        token: ${{ steps.org-token.ouputs.token || inputs.token }}
+        token: ${{ steps.org-token.outputs.token || inputs.token }}
         ssh-key: ${{ inputs.ssh-key }}
         ssh-known-hosts: ${{ inputs.ssh-known-hosts }}
         ssh-strict: ${{ inputs.ssh-strict }}

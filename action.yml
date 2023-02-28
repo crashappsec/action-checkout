@@ -147,6 +147,8 @@ runs:
         git lfs ls-files --long --include  "${{ inputs.include }}" --exclude  "${{ inputs.exclude }}" | cut -d ' ' -f1 > .lfs-assets-id-unsorted
         git submodule foreach git lfs ls-files --long --include  "${{ inputs.include }}" --exclude  "${{ inputs.exclude }}" | cut -d ' ' -f1 >> .lfs-assets-id-unsorted
         cat .lfs-assets-id-unsorted | sort > .lfs-assets-id
+        echo "LFS assets ids"
+        cat .lfs-assets-id
 
     - name: Create Submodule LFS Cache Paths
       if: steps.lfs.outputs.is_present

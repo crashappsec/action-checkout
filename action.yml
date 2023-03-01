@@ -175,7 +175,7 @@ runs:
         path: |
           ${{ inputs.path }}/.git/lfs
           ${{ steps.cache-paths.outputs.CACHE_PATHS }}
-        key: lfs-${{ hashFiles(format('{{0}}/{{1}}', inputs.path, '.lfs-assets-id')) }}-v2
+        key: lfs-${{ hashFiles(format('{0}/{1}', inputs.path, '.lfs-assets-id')) }}-v2
 
     - name: Git LFS Pull
       if: steps.lfs.outputs.is_present

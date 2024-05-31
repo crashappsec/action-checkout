@@ -99,6 +99,11 @@ inputs:
     description: The base URL for the GitHub instance that you are trying to clone from, will use environment defaults to fetch from the same instance that the workflow is running from unless specified. Example URLs are https://github.com or https://my-ghes-server.example.com
     required: false
 
+outputs:
+  token:
+    description: Token used for checking out the repo
+    value: ${{ steps.org-token.outputs.token || inputs.token || github.token }}
+
 runs:
   using: "composite"
   steps:

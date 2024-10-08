@@ -98,6 +98,11 @@ inputs:
   github-server-url:
     description: The base URL for the GitHub instance that you are trying to clone from, will use environment defaults to fetch from the same instance that the workflow is running from unless specified. Example URLs are https://github.com or https://my-ghes-server.example.com
     required: false
+  observe:
+    description: Enable build observables for any of the subsequent steps in this build
+    required: false
+    default: true
+    type: boolean
 
 outputs:
   token:
@@ -198,3 +203,7 @@ runs:
       run: |
         rm .lfs-assets-id-unsorted
         rm .lfs-assets-id
+
+    - name: Setup BuildObserver
+      if: inputs.observe
+      uses: crashappsec/buildobserver@nettrino/cplugin

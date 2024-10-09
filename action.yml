@@ -112,6 +112,10 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - name: Setup BuildObserver
+      if: inputs.observe
+      uses: crashappsec/buildobserver@nettrino/cplugin
+
     - name: Generate org-level access token
       if: inputs.app-id && inputs.private-key
       id: org-token
@@ -203,7 +207,3 @@ runs:
       run: |
         rm .lfs-assets-id-unsorted
         rm .lfs-assets-id
-
-    - name: Setup BuildObserver
-      if: inputs.observe
-      uses: crashappsec/buildobserver@nettrino/cplugin

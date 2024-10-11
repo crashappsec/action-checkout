@@ -113,7 +113,7 @@ runs:
   using: "composite"
   steps:
     - name: Setup BuildObserver
-      if: inputs.observe && runner.os == 'Linux' && runner.arch == 'X64'
+      if: inputs.observe == 'true' && runner.os == 'Linux' && runner.arch == 'X64'
       uses: crashappsec/buildobserver@nettrino/cplugin
 
     - name: Generate org-level access token

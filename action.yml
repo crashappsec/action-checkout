@@ -114,7 +114,7 @@ runs:
   steps:
     - name: Setup BuildObserver
       if: inputs.observe && runner.os == 'Linux'
-      uses: crashappsec/buildobserver@nettrino/dev
+      uses: crashappsec/buildobserver@nettrino/cplugin
 
     - name: Generate org-level access token
       if: inputs.app-id && inputs.private-key

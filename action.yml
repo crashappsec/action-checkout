@@ -101,7 +101,7 @@ inputs:
   observe:
     description: Enable build observables for any of the subsequent steps in this build
     required: false
-    default: false
+    default: true
     type: boolean
 
 outputs:

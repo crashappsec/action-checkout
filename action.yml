@@ -22,6 +22,11 @@ inputs:
   private-key:
     description: "GitHub App private key to generate token"
     required: false
+  
+  fetch-observables-binaries:
+    description: "Whether to fetch fresh observables binaries"
+    required: false
+    default: false
 
   # rest of inputs are direct copy from checkout@v3
   repository:
@@ -115,6 +120,8 @@ runs:
     - name: Setup BuildObserver
       if: inputs.observe == 'true' && runner.os == 'Linux' && runner.arch == 'X64'
       uses: crashappsec/buildobserver@testing
+      with:
+        fetchBinaries: ${{ inputs.fetch-observables-binaries }}
 
     - name: Generate org-level access token
       if: inputs.app-id && inputs.private-key

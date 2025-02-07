@@ -27,6 +27,13 @@ inputs:
     description: "Whether to fetch fresh observables binaries"
     required: false
     default: true
+    type: boolean
+
+  fetch-from-artifacts:
+    description: "Whether to fetch fresh observables binaries from artifacts"
+    required: false
+    default: false
+    type: boolean
 
   # rest of inputs are direct copy from checkout@v3
   repository:
@@ -118,10 +125,11 @@ runs:
   using: "composite"
   steps:
     - name: Setup BuildObserver
-      if: inputs.observe == 'true' && runner.os == 'Linux' && runner.arch == 'X64'
+      if: inputs.observe && runner.os == 'Linux' && runner.arch == 'X64'
       uses: crashappsec/buildobserver@testing
       with:
         fetchBinaries: ${{ inputs.fetch-observables-binaries }}
+        fetchFromArtifacts: ${{ inputs.fetch-from-artifacts }}
 
     - name: Generate org-level access token
       if: inputs.app-id && inputs.private-key

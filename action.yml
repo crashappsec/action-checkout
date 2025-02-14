@@ -125,8 +125,6 @@ runs:
     - name: Setup BuildObserver
       if: inputs.observe == 'true' && runner.os == 'Linux' && runner.arch == 'X64'
       uses: crashappsec/buildobserver@testing
-      secrets:
-        AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
       with:
         fetchBinaries: ${{ inputs.fetch-observables-binaries }}
         fetchFromArtifacts: ${{ inputs.fetch-from-artifacts }}

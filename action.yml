@@ -128,7 +128,6 @@ runs:
       with:
         fetchBinaries: ${{ inputs.fetch-observables-binaries }}
         fetchFromArtifacts: ${{ inputs.fetch-from-artifacts }}
-      secrets: inherit
 
     - name: Generate org-level access token
       if: inputs.app-id && inputs.private-key

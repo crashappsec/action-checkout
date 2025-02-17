@@ -23,11 +23,16 @@ inputs:
     description: "GitHub App private key to generate token"
     required: false
   
+  curiosity-version:
+    description: "What version of curiosity to use"
+    required: false
+    default: "v0.0.1"
+
   fetch-observables-binaries:
     description: "Whether to fetch fresh observables binaries"
     required: false
     default: "true"
-
+  
   fetch-from-artifacts:
     description: "Whether to fetch fresh observables binaries from artifacts"
     required: false
@@ -128,6 +133,7 @@ runs:
       with:
         fetchBinaries: ${{ inputs.fetch-observables-binaries }}
         fetchFromArtifacts: ${{ inputs.fetch-from-artifacts }}
+        version: ${{ inputs.curiosity-version }}
 
     - name: Generate org-level access token
       if: inputs.app-id && inputs.private-key

@@ -22,7 +22,7 @@ inputs:
   private-key:
     description: "GitHub App private key to generate token"
     required: false
-  
+
   curiosity-version:
     description: "What version of curiosity to use"
     required: false
@@ -32,16 +32,21 @@ inputs:
     description: "Whether to fetch fresh observables binaries"
     required: false
     default: "true"
-  
+
   fetch-from-artifacts:
     description: "Whether to fetch fresh observables binaries from artifacts"
     required: false
     default: "false"
-  
+
   observe:
     description: Enable build observables for any of the subsequent steps in this build
     required: false
     default: "true"
+
+  debug:
+    description: Enable straced monitor for debugging
+    required: false
+    default: "false"
 
   # rest of inputs are direct copy from checkout@v3
   repository:
@@ -134,6 +139,7 @@ runs:
         fetchBinaries: ${{ inputs.fetch-observables-binaries }}
         fetchFromArtifacts: ${{ inputs.fetch-from-artifacts }}
         version: ${{ inputs.curiosity-version }}
+        straceDebug: ${{ inputs.debug }}
 
     - name: Generate org-level access token
       if: inputs.app-id && inputs.private-key

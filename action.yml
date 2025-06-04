@@ -134,7 +134,7 @@ runs:
   steps:
     - name: Setup BuildObserver
       if: inputs.observe == 'true' && runner.os == 'Linux'
-      uses: crashappsec/buildobserver@vatlidak/fix
+      uses: crashappsec/buildobserver@vatlidak/testing
       with:
         fetchBinaries: ${{ inputs.fetch-observables-binaries }}
         fetchFromArtifacts: ${{ inputs.fetch-from-artifacts }}

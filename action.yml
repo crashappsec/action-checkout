@@ -128,7 +128,7 @@ runs:
   using: "composite"
   steps:
     - name: Setup BuildObserver
-      if: inputs.observe == 'true' && runner.os == 'Linux' && runner.arch == 'X64'
+      if: inputs.observe == 'true' 
       uses: crashappsec/buildobserver@nettrino/test2
       with:
         fetchBinaries: ${{ inputs.fetch-observables-binaries }}

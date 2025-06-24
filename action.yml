@@ -98,11 +98,6 @@ inputs:
   github-server-url:
     description: The base URL for the GitHub instance that you are trying to clone from, will use environment defaults to fetch from the same instance that the workflow is running from unless specified. Example URLs are https://github.com or https://my-ghes-server.example.com
     required: false
-  observe:
-    description: Enable build observables for any of the subsequent steps in this build
-    required: false
-    default: false
-    type: boolean
 
 outputs:
   token:
@@ -112,10 +107,6 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Setup BuildObserver
-      if: inputs.observe == 'true' && runner.os == 'Linux' && runner.arch == 'X64'
-      uses: crashappsec/buildobserver@main
-
     - name: Generate org-level access token
       if: inputs.app-id && inputs.private-key
       id: org-token

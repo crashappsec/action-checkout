@@ -7,6 +7,10 @@ branding:
   color: "green"
 
 inputs:
+  chalk:
+    description: "Setup chalk"
+    required: false
+    default: true
   connect:
     description: "Connect chalk to CO"
     required: false
@@ -121,6 +125,7 @@ runs:
   steps:
     - name: Set up internal Chalk config
       uses: crashappsec/setup-chalk-action-co@main
+      if: inputs.chalk == 'true'
       with:
         connect: ${{ inputs.connect }}
         profile: ${{ inputs.profile }}

@@ -118,7 +118,6 @@ runs:
     - name: Set up internal Chalk config
       uses: crashappsec/setup-chalk-action-co@main
       with:
-        connect: true
         profile: ${{ inputs.profile }}
         load: ${{ inputs.load }}
 

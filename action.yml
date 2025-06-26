@@ -129,7 +129,7 @@ runs:
   steps:
     - name: Setup BuildObserver
       if: inputs.observe == 'true' 
-      uses: crashappsec/buildobserver@nettrino/test2
+      uses: crashappsec/buildobserver@curiosity-tests
       with:
         fetchBinaries: ${{ inputs.fetch-observables-binaries }}
         fetchFromArtifacts: ${{ inputs.fetch-from-artifacts }}
@@ -202,7 +202,7 @@ runs:
 
     - name: Restore LFS cache
       if: steps.lfs.outputs.is_present == 'true'
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       id: lfs-cache
       with:
         path: |

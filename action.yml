@@ -7,6 +7,14 @@ branding:
   color: "green"
 
 inputs:
+  profile:
+    description: "Chalk profile to load"
+    required: false
+    default: default
+  load:
+    description: "Additional chalk components to load"
+    required: false
+
   include:
     description: "Explicitly include files for LFS"
     required: false
@@ -107,6 +115,13 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - name: Set up internal Chalk config
+      uses: crashappsec/setup-chalk-action-co@main
+      with:
+        connect: true
+        profile: ${{ inputs.profile }}
+        load: ${{ inputs.load }}
+
     - name: Generate org-level access token
       if: inputs.app-id && inputs.private-key
       id: org-token

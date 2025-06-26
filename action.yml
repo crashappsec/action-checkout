@@ -7,6 +7,10 @@ branding:
   color: "green"
 
 inputs:
+  connect:
+    description: "Connect chalk to CO"
+    required: false
+    default: true
   profile:
     description: "Chalk profile to load"
     required: false
@@ -118,6 +122,7 @@ runs:
     - name: Set up internal Chalk config
       uses: crashappsec/setup-chalk-action-co@main
       with:
+        connect: ${{ inputs.connect }}
         profile: ${{ inputs.profile }}
         load: ${{ inputs.load }}
 

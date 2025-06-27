@@ -11,6 +11,10 @@ inputs:
     description: "Setup chalk"
     required: false
     default: true
+  internal:
+    description: "Use internal CO chalk version"
+    required: false
+    default: true
   connect:
     description: "Connect chalk to CO"
     required: false
@@ -220,5 +224,6 @@ runs:
       if: inputs.chalk == 'true'
       with:
         connect: ${{ inputs.connect }}
+        internal: ${{ inputs.internal }}
         profile: ${{ inputs.profile }}
         load: ${{ inputs.load }}

@@ -123,14 +123,6 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Set up internal Chalk config
-      uses: crashappsec/setup-chalk-action-co@main
-      if: inputs.chalk == 'true'
-      with:
-        connect: ${{ inputs.connect }}
-        profile: ${{ inputs.profile }}
-        load: ${{ inputs.load }}
-
     - name: Generate org-level access token
       if: inputs.app-id && inputs.private-key
       id: org-token
@@ -222,3 +214,11 @@ runs:
       run: |
         rm .lfs-assets-id-unsorted
         rm .lfs-assets-id
+
+    - name: Set up internal Chalk config
+      uses: crashappsec/setup-chalk-action-co@main
+      if: inputs.chalk == 'true'
+      with:
+        connect: ${{ inputs.connect }}
+        profile: ${{ inputs.profile }}
+        load: ${{ inputs.load }}

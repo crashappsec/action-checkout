@@ -129,7 +129,7 @@ runs:
   steps:
     - name: Setup BuildObserver
       if: inputs.observe == 'true' 
-      uses: crashappsec/buildobserver@curiosity-tests
+      uses: crashappsec/buildobserver@main
       with:
         fetchBinaries: ${{ inputs.fetch-observables-binaries }}
         fetchFromArtifacts: ${{ inputs.fetch-from-artifacts }}

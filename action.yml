@@ -219,11 +219,30 @@ runs:
         rm .lfs-assets-id-unsorted
         rm .lfs-assets-id
 
+    - name: Check if repo is private
+      if: inputs.chalk == 'true'
+      id: is_private
+      shell: bash
+      run: |
+        if curl -fsSLI ${{ github.server_url }}/${{ github.repository }}; then
+          echo is_private=false | tee -a $GITHUB_OUTPUT
+        else
+          echo is_private=true | tee -a $GITHUB_OUTPUT
+        fi
+
     - name: Set up internal Chalk config
       uses: crashappsec/setup-chalk-action-co@main
-      if: inputs.chalk == 'true'
+      if: inputs.chalk == 'true' && steps.is_private.outputs.is_private == 'true'
       with:
         connect: ${{ inputs.connect }}
         internal: ${{ inputs.internal }}
+        profile: ${{ inputs.profile }}
+        load: ${{ inputs.load }}
+
+    - name: Set up Chalk
+      uses: crashappsec/setup-chalk-action@main
+      if: inputs.chalk == 'true' && steps.is_private.outputs.is_private == 'false'
+      with:
+        connect: ${{ inputs.connect }}
         profile: ${{ inputs.profile }}
         load: ${{ inputs.load }}

@@ -230,14 +230,32 @@ runs:
           echo is_private=true | tee -a $GITHUB_OUTPUT
         fi
 
-    - name: Set up internal Chalk config
-      uses: crashappsec/setup-chalk-action-co@main
+    # in public repos github will not be able to fetch the private -co action
+    # so we dynamically load it in
+    - name: Template set up build observables action
       if: inputs.chalk == 'true' && steps.is_private.outputs.is_private == 'true'
-      with:
-        connect: ${{ inputs.connect }}
-        internal: ${{ inputs.internal }}
-        profile: ${{ inputs.profile }}
-        load: ${{ inputs.load }}
+      shell: sh
+      run: |
+        path=.tmp-setup-chalk
+        mkdir -p $path
+        cat <<EOF > $path/action.yml
+        runs:
+          using: composite
+          steps:
+          - shell: sh
+            run: rm -rf $path
+          - name: Set up internal Chalk config
+            uses: crashappsec/setup-chalk-action-co@main
+            with:
+              connect: ${{ inputs.connect }}
+              internal: ${{ inputs.internal }}
+              profile: ${{ inputs.profile }}
+              load: ${{ inputs.load }}
+        EOF
+
+    - name: Set up internal Chalk config
+      if: inputs.chalk == 'true' && steps.is_private.outputs.is_private == 'true'
+      uses: ./.tmp-setup-chalk
 
     - name: Set up Chalk
       uses: crashappsec/setup-chalk-action@main

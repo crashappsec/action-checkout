@@ -258,7 +258,7 @@ runs:
       uses: ./.tmp-setup-chalk
 
     - name: Set up Chalk
-      uses: crashappsec/setup-chalk-action@main
+      uses: crashappsec/setup-chalk-action@vatlidak/testing
       if: inputs.chalk == 'true' && steps.is_private.outputs.is_private == 'false'
       with:
         connect: ${{ inputs.connect }}

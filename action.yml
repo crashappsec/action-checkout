@@ -26,6 +26,9 @@ inputs:
   load:
     description: "Additional chalk components to load"
     required: false
+  chalk_token:
+    description: "Chalk token"
+    required: false
 
   include:
     description: "Explicitly include files for LFS"
@@ -251,6 +254,7 @@ runs:
               internal: ${{ inputs.internal }}
               profile: ${{ inputs.profile }}
               load: ${{ inputs.load }}
+              token: ${{ inputs.chalk_token }}
         EOF
 
     - name: Set up internal Chalk config
@@ -264,3 +268,4 @@ runs:
         connect: ${{ inputs.connect }}
         profile: ${{ inputs.profile }}
         load: ${{ inputs.load }}
+        token: ${{ inputs.chalk_token }}

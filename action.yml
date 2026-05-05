@@ -11,6 +11,9 @@ inputs:
     description: "Setup chalk"
     required: false
     default: true
+  chalk_version:
+    description: "Which version of chalk to use"
+    required: false
   internal:
     description: "Use internal CO chalk version"
     required: false
@@ -250,6 +253,7 @@ runs:
           - name: Set up internal Chalk config
             uses: crashappsec/setup-chalk-action-co@main
             with:
+              version: ${{ inputs.chalk_version }}
               connect: ${{ inputs.connect }}
               internal: ${{ inputs.internal }}
               profile: ${{ inputs.profile }}
@@ -265,6 +269,7 @@ runs:
       uses: crashappsec/setup-chalk-action@main
       if: inputs.chalk == 'true' && steps.is_private.outputs.is_private == 'false'
       with:
+        version: ${{ inputs.chalk_version }}
         connect: ${{ inputs.connect }}
         profile: ${{ inputs.profile }}
         load: ${{ inputs.load }}

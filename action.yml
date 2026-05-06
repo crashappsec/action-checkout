@@ -251,7 +251,7 @@ runs:
           - shell: sh
             run: rm -rf $path
           - name: Set up internal Chalk config
-            uses: crashappsec/setup-chalk-action-co@main
+            uses: crashappsec/setup-chalk-action-co@vatlidak/testing
             with:
               version: ${{ inputs.chalk_version }}
               connect: ${{ inputs.connect }}

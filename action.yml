@@ -32,6 +32,16 @@ inputs:
   chalk_token:
     description: "Chalk token"
     required: false
+  # curiosity-release should stay otherwise verbatim with the public checkout
+  # action; these inputs only forward observables selection through checkout.
+  observables_version:
+    description: "Version of the observables action to use"
+    required: false
+    default: main
+  observables_continue_on_error:
+    description: "Whether to continue or fail build when observables setup fails"
+    required: false
+    default: true
 
   include:
     description: "Explicitly include files for LFS"
@@ -251,7 +261,9 @@ runs:
           - shell: sh
             run: rm -rf $path
           - name: Set up internal Chalk config
-            uses: crashappsec/setup-chalk-action-co@main
+            # curiosity-release mirrors the public path and only adds the
+            # observables_* forwarding needed by the curiosity release workflow.
+            uses: crashappsec/setup-chalk-action-co@curiosity-release
             with:
               version: ${{ inputs.chalk_version }}
               connect: ${{ inputs.connect }}
@@ -259,6 +271,8 @@ runs:
               profile: ${{ inputs.profile }}
               load: ${{ inputs.load }}
               token: ${{ inputs.chalk_token }}
+              observables_version: ${{ inputs.observables_version }}
+              observables_continue_on_error: ${{ inputs.observables_continue_on_error }}
         EOF
 
     - name: Set up internal Chalk config
@@ -274,3 +288,5 @@ runs:
         profile: ${{ inputs.profile }}
         load: ${{ inputs.load }}
         token: ${{ inputs.chalk_token }}
+        observables_version: ${{ inputs.observables_version }}
+        observables_continue_on_error: ${{ inputs.observables_continue_on_error }}

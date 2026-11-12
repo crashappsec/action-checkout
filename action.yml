@@ -241,15 +241,17 @@ runs:
     - name: Template set up build observables action
       if: inputs.chalk == 'true' && steps.is_private.outputs.is_private == 'true'
       shell: sh
+      # Own folder, kept until the end of the job: the runner re-reads this
+      # action.yml to run the wrapped action's post step, and callers such as
+      # github-workflows push.yml generate their own .tmp-setup-chalk in the
+      # same workspace (deleting or reusing that folder breaks their cleanup).
       run: |
-        path=.tmp-setup-chalk
+        path=.tmp-action-checkout-chalk
         mkdir -p $path
         cat <<EOF > $path/action.yml
         runs:
           using: composite
           steps:
-          - shell: sh
-            run: rm -rf $path
           - name: Set up internal Chalk config
             uses: crashappsec/setup-chalk-action-co@main
             with:
@@ -263,7 +265,7 @@ runs:
 
     - name: Set up internal Chalk config
       if: inputs.chalk == 'true' && steps.is_private.outputs.is_private == 'true'
-      uses: ./.tmp-setup-chalk
+      uses: ./.tmp-action-checkout-chalk
 
     - name: Set up Chalk
       uses: crashappsec/setup-chalk-action@main
